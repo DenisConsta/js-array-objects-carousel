@@ -33,30 +33,41 @@ const countries = [
 
 console.log(countries);
 
-let counter = 0, lastCounter = 0;
-let clock, isOver = false;
+let counter = 0, lastCounter = 0, speed = 1;
+let autoplay, isOver = false;
 const slider = document.querySelector('.slider');
 const gallery = document.querySelector('.gallery');
 const container = document.querySelector('.content-container');
 const sliderCountries = [], galleryCountries = [];
+const btnSlow = document.querySelector('.fa-droplet');
+const btnFast = document.querySelector('.fa-crow');
 
-
-//? Inizializzazione slider e autoplay
-initSlider();
-clock = initClock();
+/* const changespeed = (value) => (value >= 1) ? speed = value : speed;
+ */
+  //? Inizializzazione slider e autoplay
+  initSlider();
+  autoplay = initClock();
 
 //? Listener mouse over
-container.addEventListener('mouseenter', function(){
+container.addEventListener('mouseenter', function () {
   isOver = true;
 });
 
 //? Listener mouse leave
-container.addEventListener('mouseleave', function(){
+container.addEventListener('mouseleave', function () {
   isOver = false;
 });
 
+btnSlow.addEventListener('click', function () {
+  autoplay = changespeed(speed+0.1);
+});
+
+btnFast.addEventListener('click', function () {
+  autoplay = changespeed(speed-0.1);
+});
+
 //? Creazione slider
-function initSlider(){
+function initSlider() {
   countries.forEach(country => {
     //? creazione slider nel DOM
     slider.innerHTML += createSlide(country);
@@ -89,13 +100,13 @@ function createSlide(object) {
 }
 
 //? crea la thumb del paese passato come parametro
-function createThumb(object){
+function createThumb(object) {
   const thumb = document.createElement('img');
   thumb.src = object.imgSrc;
   thumb.id = "thumb" + object.idCountry;
   thumb.classList.add('gallery-slide');
-  thumb.addEventListener('click', function(){
-    moveAt(parseInt(thumb.id.charAt(thumb.id.length-1)));
+  thumb.addEventListener('click', function () {
+    moveAt(parseInt(thumb.id.charAt(thumb.id.length - 1)));
   });
 
   return thumb;
@@ -103,9 +114,9 @@ function createThumb(object){
 
 //? Inizializza l'autoplay
 function initClock() {
-  clock = setInterval(function () {
+  return setInterval(function () {
     if (!isOver) moveSlider(true);
-  }, 1000);
+  }, (speed * 1000));
 }
 
 //? Cambia slide a seconda del valore booleano
@@ -115,22 +126,22 @@ function initClock() {
  */
 function moveSlider(value) {
   addClasses();
-  if (value){
+  if (value) {
     if (counter === (sliderCountries.length - 1)) counter = -1;
     counter++;
   }
-  
-  else{
+
+  else {
     if (counter === 0) counter = sliderCountries.length;
     counter--;
-  } 
+  }
   removesClasses();
 }
 
 //? Spostamento diretto verso la slide desiderata
-function moveAt(index){
+function moveAt(index) {
   addClasses();
-  counter = index-1;
+  counter = index - 1;
   removesClasses();
 }
 
@@ -143,4 +154,14 @@ function addClasses() {
 function removesClasses() {
   document.getElementById(sliderCountries[counter].id).classList.remove('d-none');
   document.getElementById(galleryCountries[counter].id).classList.add('active');
+}
+
+function changespeed(value){
+  if(value >= 0.1){
+    clearInterval(autoplay);
+    speed = value;
+    return initClock(autoplay);
+  }
+
+  return autoplay;
 }

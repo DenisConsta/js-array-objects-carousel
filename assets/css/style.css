@@ -14,6 +14,7 @@
 
 .gallery {
   height: 200px;
+  position: relative;
 }
 
 .my-container {
@@ -49,4 +50,20 @@
 .gallery-slide.active{
   border: 3px solid white;
   filter: none;
+}
+
+.my-btn{
+  position: absolute;
+  color: white;
+  background-color: black;
+  padding: 20px;
+  z-index: 2;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.my-btn:last-of-type{
+  right: 0;
 }
