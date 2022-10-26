@@ -1,0 +1,45 @@
+.main-wrapper {
+  min-height: 100vh;
+  background-color: #222;
+}
+
+.debug {
+  border: 1px solid firebrick;
+  background-color: bisque;
+}
+
+.slider {
+  height: 500px;
+}
+
+.gallery {
+  height: 200px;
+}
+
+.my-container {
+  height: 100vh;
+}
+
+.slide{
+  position: relative;
+}
+
+.slide img {
+  object-fit: cover;
+}
+
+.slide .details{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, .4);
+  color: white;
+  padding: 20px;
+  text-align: right;
+}
+
+.gallery-slide {
+  height: 100%;
+  width: 20%;
+  background-color: cornflowerblue;
+}
