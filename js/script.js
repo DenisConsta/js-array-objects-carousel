@@ -33,22 +33,29 @@ const countries = [
 
 console.log(countries);
 
-let counter = 0, clock;
+let counter = 0, lastCounter = 0;
+let clock, isOver = false;
 const slider = document.querySelector('.slider');
 const gallery = document.querySelector('.gallery');
+const container = document.querySelector('.content-container');
 const sliderCountries = [], galleryCountries = [];
-const btn = document.querySelector('.btn');
 
-btn.addEventListener('click', function(){
-  console.log(counter);
-  moveSlider(true);
-  console.log(counter);
 
+//? Inizializzazione slider e autoplay
+initSlider();
+clock = initClock();
+
+//? Listener mouse over
+container.addEventListener('mouseenter', function(){
+  isOver = true;
 });
 
-initSlider();
-console.log(sliderCountries);
+//? Listener mouse leave
+container.addEventListener('mouseleave', function(){
+  isOver = false;
+});
 
+//? Creazione slider
 function initSlider(){
   countries.forEach(country => {
     //? creazione slider nel DOM
@@ -56,11 +63,14 @@ function initSlider(){
     // ? push dell'elemento creato in sliderCountries
     sliderCountries.push(slider.lastElementChild);
 
-    gallery.innerHTML += createThumb(country);
-    galleryCountries.push(gallery.lastElementChild);
+    const thumb = createThumb(country);
+    gallery.append(thumb);
+    galleryCountries.push(thumb);
   });
 
   document.getElementById(sliderCountries[counter].id).classList.remove('d-none');
+  document.getElementById(galleryCountries[counter].id).classList.add('active');
+
 }
 
 //? crea la slide del paese passato come parametro
@@ -80,21 +90,29 @@ function createSlide(object) {
 
 //? crea la thumb del paese passato come parametro
 function createThumb(object){
-  const thumb = `
-    <img src="${object.imgSrc}" id="thumb${object.idCountry}" class="gallery-slide"></img>
-  `;
+  const thumb = document.createElement('img');
+  thumb.src = object.imgSrc;
+  thumb.id = "thumb" + object.idCountry;
+  thumb.classList.add('gallery-slide');
+  thumb.addEventListener('click', function(){
+    moveAt(parseInt(thumb.id.charAt(thumb.id.length-1)));
+  });
 
   return thumb;
 }
 
-
+//? Inizializza l'autoplay
 function initClock() {
   clock = setInterval(function () {
     if (!isOver) moveSlider(true);
   }, 1000);
 }
 
-
+//? Cambia slide a seconda del valore booleano
+/**
+ * 
+ * @param {true: next, false: prev} value 
+ */
 function moveSlider(value) {
   addClasses();
   if (value){
@@ -109,12 +127,20 @@ function moveSlider(value) {
   removesClasses();
 }
 
+//? Spostamento diretto verso la slide desiderata
+function moveAt(index){
+  addClasses();
+  counter = index-1;
+  removesClasses();
+}
+
+//? Aggiunta - rimozione di classi per non visualizzare gli elementi passati
 function addClasses() {
   document.getElementById(sliderCountries[counter].id).classList.add('d-none');
-  //thumbs[counter].classList.add('active');
+  document.getElementById(galleryCountries[counter].id).classList.remove('active');
 }
 
 function removesClasses() {
   document.getElementById(sliderCountries[counter].id).classList.remove('d-none');
-  //thumbs[counter].classList.remove('active');
+  document.getElementById(galleryCountries[counter].id).classList.add('active');
 }
