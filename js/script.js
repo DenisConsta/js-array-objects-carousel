@@ -34,7 +34,7 @@ const countries = [
 console.log(countries);
 
 let counter = 0, lastCounter = 0, speed = 1;
-let autoplay, isOver = false;
+let autoplay, isOver = false, isInverted = false;
 const slider = document.querySelector('.slider');
 const gallery = document.querySelector('.gallery');
 const container = document.querySelector('.content-container');
@@ -44,9 +44,9 @@ const btnFast = document.querySelector('.fa-crow');
 
 /* const changespeed = (value) => (value >= 1) ? speed = value : speed;
  */
-  //? Inizializzazione slider e autoplay
-  initSlider();
-  autoplay = initClock();
+//? Inizializzazione slider e autoplay
+initSlider();
+autoplay = initClock();
 
 //? Listener mouse over
 container.addEventListener('mouseenter', function () {
@@ -59,12 +59,23 @@ container.addEventListener('mouseleave', function () {
 });
 
 btnSlow.addEventListener('click', function () {
-  autoplay = changespeed(speed+0.1);
+  autoplay = changespeed(speed + 0.1);
 });
 
 btnFast.addEventListener('click', function () {
-  autoplay = changespeed(speed-0.1);
+  autoplay = changespeed(speed - 0.1);
 });
+
+//? Listener per invertire la direzione di scorrimento 
+document.body.onkeyup = function (e) {
+  if (e.key == " " ||
+    e.code == "Space" ||
+    e.keyCode == 32
+  ) {
+    if (!isInverted) isInverted = true;
+    else isInverted = false;
+  }
+}
 
 //? Creazione slider
 function initSlider() {
@@ -115,7 +126,12 @@ function createThumb(object) {
 //? Inizializza l'autoplay
 function initClock() {
   return setInterval(function () {
-    if (!isOver) moveSlider(true);
+    if (!isOver) {
+      if (!isInverted)
+        moveSlider(true);
+      else
+        moveSlider(false);
+    }
   }, (speed * 1000));
 }
 
@@ -156,8 +172,8 @@ function removesClasses() {
   document.getElementById(galleryCountries[counter].id).classList.add('active');
 }
 
-function changespeed(value){
-  if(value >= 0.1){
+function changespeed(value) {
+  if (value >= 0.1) {
     clearInterval(autoplay);
     speed = value;
     return initClock(autoplay);
