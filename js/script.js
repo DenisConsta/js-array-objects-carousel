@@ -70,13 +70,8 @@ btnFast.addEventListener('click', function () {
 
 //? Listener per invertire la direzione di scorrimento 
 document.body.onkeyup = function (e) {
-  if (e.key == " " ||
-    e.code == "Space" ||
-    e.keyCode == 32
-  ) {
-    if (!isInverted) isInverted = true;
-    else isInverted = false;
-  }
+  if (e.key == " " || e.code == "Space" || e.keyCode == 32)
+    isInverted = !isInverted;
 }
 
 //? Creazione slider

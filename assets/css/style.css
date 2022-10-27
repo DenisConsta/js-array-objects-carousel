@@ -64,6 +64,11 @@
   cursor: pointer;
 }
 
+.my-btn:hover{
+  color: black;
+  background-color: white;
+}
+
 .my-btn:last-of-type{
   right: 0;
 }
