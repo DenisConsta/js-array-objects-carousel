@@ -58,10 +58,12 @@ container.addEventListener('mouseleave', function () {
   isOver = false;
 });
 
+//? Listener btnSlow 
 btnSlow.addEventListener('click', function () {
   autoplay = changespeed(speed + 0.1);
 });
 
+//? Listener btnFast
 btnFast.addEventListener('click', function () {
   autoplay = changespeed(speed - 0.1);
 });
